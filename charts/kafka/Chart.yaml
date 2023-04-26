@@ -1,0 +1,16 @@
+apiVersion: v2
+name: kafka
+description:  Helm chart for Apache Kafka.
+type: application
+
+version: 1.0.3
+appVersion: 3.3.2
+
+maintainers:
+  - name: sir5kong
+    url: "https://github.com/sir5kong/"
+
+keywords:
+  - kafka
+  - streaming
+  - kraft

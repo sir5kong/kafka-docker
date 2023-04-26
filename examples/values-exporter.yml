@@ -1,0 +1,11 @@
+exporter:
+  enabled: true
+  image:
+    repository: danielqsj/kafka-exporter
+    pullPolicy: IfNotPresent
+    tag: "latest"
+  ## exporter.podAnnotations
+  podAnnotations:
+    prometheus.io/path: /metrics
+    prometheus.io/port: "9308"
+    prometheus.io/scrape: "true"

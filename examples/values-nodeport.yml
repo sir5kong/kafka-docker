@@ -1,0 +1,11 @@
+broker:
+  replicaCount: 3
+  external:
+    enabled: true
+    service:
+      type: "NodePort"
+      annotations: {}
+    nodePorts:
+      - 31050
+      - 31051
+      - 31052

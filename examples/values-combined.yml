@@ -1,0 +1,16 @@
+image:
+  repository: sir5kong/kafka
+  pullPolicy: IfNotPresent
+  tag: "3.3.2"
+
+broker:
+  ## broker.combinedMode 混部模式, 将 controller 和 broker 部署在一起
+  ## process.roles: "broker,controller"
+  combinedMode:
+    enabled: true
+  replicaCount: 1
+  heapOpts: "-Xms1024m -Xmx1024m"
+  persistence:
+    enabled: true
+    size: 20Gi
+    #storageClass: gp2

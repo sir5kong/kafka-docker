@@ -1,0 +1,8 @@
+broker:
+  replicaCount: 3
+  external:
+    enabled: true
+    service:
+      type: "LoadBalancer"
+      annotations: {}
+    domainSuffix: "kafka.example.com"
