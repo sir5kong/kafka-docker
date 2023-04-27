@@ -13,7 +13,7 @@
 - 在即将发布的 Kafka 3.5 版本中会弃用 ZooKeeper.
 - 计划在 Kafka 4.0 版本中完全删除 ZooKeeper 模式。
 
-本项目提前弃用 ZooKeeper，你可以使用 helm chart 快速部署一套 KRaft 集群，推荐选择 Kfaka 3.3 及以上版本。
+本项目提前弃用 ZooKeeper，你可以使用 helm chart 快速部署一套 KRaft 集群，推荐选择 Kafka 3.3 及以上版本。
 
 ## 部署案例
 
