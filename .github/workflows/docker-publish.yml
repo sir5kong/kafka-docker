@@ -2,10 +2,10 @@ name: ci
 
 on:
   push:
-    #branches:
-    #  - 'main'
+    branches:
+      - 'main'
     tags:
-      - 'v*.*.*'
+      - 'v*'
 
 env:
   CR_REPO: sir5kong/kafka
