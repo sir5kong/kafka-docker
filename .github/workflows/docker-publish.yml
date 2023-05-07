@@ -2,8 +2,8 @@ name: ci
 
 on:
   push:
-    branches:
-      - 'main'
+    #branches:
+    #  - 'main'
     tags:
       - 'v*.*.*'
 
@@ -35,4 +35,4 @@ jobs:
         with:
           context: .
           push: true
-          tags: ${{ env.CR_REPO }}:${{ env.GITHUB_REF_NAME }}
+          tags: ${{ env.CR_REPO }}:${{ GITHUB_REF_NAME }}
