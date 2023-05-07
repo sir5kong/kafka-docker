@@ -43,7 +43,7 @@ jobs:
           build-args: |
             kafka_version=${{ env.KAFKA_VERSION }}
           tags: |
-            ${{ env.CR_REPO }}:${{ steps.vars.outputs.sha_short }}
+            ${{ env.CR_REPO }}:${{ env.KAFKA_VERSION }}-${{ steps.vars.outputs.sha_short }}
             ${{ env.CR_REPO }}:${{ env.KAFKA_VERSION }}-${{ github.ref_name }}
             ${{ env.CR_REPO }}:${{ env.KAFKA_VERSION }}
             ${{ env.CR_REPO }}:latest
