@@ -30,6 +30,7 @@ jobs:
             if [[ $? == "0" ]]; then
               echo "is_release=true" >> $GITHUB_OUTPUT
               echo "kafka_version=${kafka_version}" >> $GITHUB_OUTPUT
+              echo "kafka_version_short=$(echo $kafka_version | sed -E 's/.[0-9]+$//')" >> $GITHUB_OUTPUT
             fi
           fi
       -
@@ -62,4 +63,5 @@ jobs:
             ${{ env.CR_REPO }}:v${{ env.KAFKA_VERSION }}-${{ steps.vars.outputs.sha_short }}
             ${{ env.CR_REPO }}:${{ github.ref_name }}
             ${{ env.CR_REPO }}:v${{ env.KAFKA_VERSION }}
+            ${{ env.CR_REPO }}:v${{ steps.vars.outputs.kafka_version_short }}
             ${{ env.CR_REPO }}:latest
