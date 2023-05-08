@@ -32,10 +32,11 @@ jobs:
               echo "is_release=true" >> $GITHUB_OUTPUT
               echo "kafka_version=${kafka_version}" >> $GITHUB_OUTPUT
               echo "kafka_version_short=$(echo $kafka_version | sed -E 's/.[0-9]+$//')" >> $GITHUB_OUTPUT
+              echo "sha_tag=v${kafka_version}-${sha_short}" >> $GITHUB_OUTPUT
               if [[ "$kafka_version" == "$KAFKA_VERSION" ]]; then
                 echo "latest_or_sha=latest" >> $GITHUB_OUTPUT
               else
-                echo "latest_or_sha=v${kafka_version}${sha_short}" >> $GITHUB_OUTPUT
+                echo "latest_or_sha=$sha_tag" >> $GITHUB_OUTPUT
               fi
             fi
           fi
@@ -58,15 +59,15 @@ jobs:
         name: Build and push
         uses: docker/build-push-action@v4
         if: steps.vars.outputs.is_release == 'true'
-        env:
-          KAFKA_VERSION: '${{ steps.vars.outputs.kafka_version }}'
+        # env:
+        #   KAFKA_VERSION: '${{ steps.vars.outputs.kafka_version }}'
         with:
           context: .
           push: true
           build-args: |
             kafka_version=${{ env.KAFKA_VERSION }}
           tags: |
-            ${{ env.CR_REPO }}:v${{ env.KAFKA_VERSION }}-${{ steps.vars.outputs.sha_short }}
+            ${{ env.CR_REPO }}:${{ steps.vars.outputs.sha_tag }}
             ${{ env.CR_REPO }}:${{ steps.vars.outputs.latest_or_sha }}
             ${{ env.CR_REPO }}:v${{ steps.vars.outputs.kafka_version_short }}
-            ${{ env.CR_REPO }}:v${{ env.KAFKA_VERSION }}
+            ${{ env.CR_REPO }}:v${{ steps.vars.outputs.kafka_version }}
