@@ -46,24 +46,40 @@ services:
     image: sir5kong/kafka:v3.3.2
     # restart: always
     network_mode: host
+    ## bootstrap-server: HOST_IP_ADDRESS:9092
     volumes:
       - kafka-data:/opt/kafka/data
     environment:
       - KAFKA_HEAP_OPTS=-Xmx512m -Xms512m
 
-  ## kafka-ui 可视化管理工具
-  kafka-ui:
-    image: provectuslabs/kafka-ui
+```
+
+自定义端口号，比如 controller 使用`29091` 端口，broker 使用 `29092` 端口:
+
+``` yaml
+version: "3"
+
+volumes:
+  kafka-data: {}
+
+services:
+  kafka:
+    image: sir5kong/kafka:v3.3.2
     # restart: always
-    ports:
-      - "18080:8080"
+    network_mode: host
+    volumes:
+      - kafka-data:/opt/kafka/data
     environment:
-      - KAFKA_CLUSTERS_0_NAME=test-cluster
-      - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=kafka:9092
+      - KAFKA_HEAP_OPTS=-Xmx512m -Xms512m
+      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP="CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT"
+      ## bootstrap-server: HOST_IP_ADDRESS:29092
+      - KAFKA_CFG_LISTENERS="CONTROLLER://:29091,PLAINTEXT://:29092"
+      - KAFKA_CFG_NODE_ID="1"
+      - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS="1@127.0.0.1:29091"
 
 ```
 
-## 部署案例
+## helm 部署案例
 
 ``` shell
 # kubectl create namespace your-namespace

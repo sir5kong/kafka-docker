@@ -1,0 +1,19 @@
+version: "3"
+
+volumes:
+  kafka-data: {}
+
+services:
+  kafka:
+    image: sir5kong/kafka:v3.3.2
+    # restart: always
+    network_mode: host
+    volumes:
+      - kafka-data:/opt/kafka/data
+    environment:
+      - KAFKA_HEAP_OPTS=-Xmx512m -Xms512m
+      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT
+      ## bootstrap-server: HOST_IP_ADDRESS:29092
+      - KAFKA_CFG_LISTENERS=CONTROLLER://:29091,PLAINTEXT://:29092
+      - KAFKA_CFG_NODE_ID=1
+      - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=1@127.0.0.1:29091
