@@ -32,7 +32,8 @@ jobs:
               echo "is_release=true" >> $GITHUB_OUTPUT
               echo "kafka_version=${kafka_version}" >> $GITHUB_OUTPUT
               echo "kafka_version_short=$(echo $kafka_version | sed -E 's/.[0-9]+$//')" >> $GITHUB_OUTPUT
-              echo "sha_tag=v${kafka_version}-${sha_short}" >> $GITHUB_OUTPUT
+              sha_tag="v${kafka_version}-${sha_short}"
+              echo "sha_tag=$sha_tag" >> $GITHUB_OUTPUT
               if [[ "$kafka_version" == "$KAFKA_VERSION" ]]; then
                 echo "latest_or_sha=latest" >> $GITHUB_OUTPUT
               else
