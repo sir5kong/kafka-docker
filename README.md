@@ -6,7 +6,7 @@
 
 ## 拥抱 KRaft
 
-老版本的 Kfaka 必须与 ZooKeeper 一起运行，哪怕一个最小的集群也需要同时部署一个 kfaka 和一个 ZooKeeper。有了 KRaft 这种耦合得到解放，并且 KRaft 解决了 Kafka 许多紧迫的可扩展性和性能问题。
+老版本的 Kafka 必须与 ZooKeeper 一起运行，哪怕一个最小的集群也需要同时部署一个 Kafka 和一个 ZooKeeper。有了 KRaft 这种耦合得到解放，并且 KRaft 解决了 Kafka 许多紧迫的可扩展性和性能问题。
 
 - Kafka 2.8 版本，KRaft 体验版发布。
 - Kafka 3.3 版本，KRaft 被标记为 `production-ready`.
@@ -14,6 +14,54 @@
 - 计划在 Kafka 4.0 版本中完全删除 ZooKeeper 模式。
 
 本项目提前弃用 ZooKeeper，你可以使用 helm chart 快速部署一套 KRaft 集群，推荐选择 Kafka 3.3 及以上版本。
+
+## Docker 部署
+
+``` shell
+docker run -d --name kafka-server \
+  --network host \
+  sir5kong/kafka:v3.3.2
+```
+
+启动 kafka server 并持久化数据目录:
+
+``` shell
+docker volume create kafka_data
+docker run -d --name kafka-server \
+  --network host \
+  -v kafka_data:/opt/kafka/data \
+  sir5kong/kafka:v3.3.2
+```
+
+### Docker Compose
+
+``` yaml
+version: "3"
+
+volumes:
+  kafka-data: {}
+
+services:
+  kafka:
+    image: sir5kong/kafka:v3.3.2
+    # restart: always
+    network_mode: host
+    volumes:
+      - kafka-data:/opt/kafka/data
+    environment:
+      - KAFKA_HEAP_OPTS=-Xmx512m -Xms512m
+
+  ## kafka-ui 可视化管理工具
+  kafka-ui:
+    image: provectuslabs/kafka-ui
+    # restart: always
+    ports:
+      - "18080:8080"
+    environment:
+      - KAFKA_CLUSTERS_0_NAME=test-cluster
+      - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=kafka:9092
+
+```
 
 ## 部署案例
 

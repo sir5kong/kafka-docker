@@ -7,9 +7,18 @@ services:
   kafka:
     image: sir5kong/kafka:v3.3.2
     # restart: always
-    ports:
-      - '9092:9092'
+    network_mode: host
     volumes:
       - kafka-data:/opt/kafka/data
     environment:
       - KAFKA_HEAP_OPTS=-Xmx512m -Xms512m
+
+  ## kafka-ui 可视化管理工具
+  kafka-ui:
+    image: provectuslabs/kafka-ui
+    # restart: always
+    ports:
+      - "18080:8080"
+    environment:
+      - KAFKA_CLUSTERS_0_NAME=test-cluster
+      - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=kafka:9092
