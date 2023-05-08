@@ -19,15 +19,14 @@ FROM eclipse-temurin:17-jre-focal
 ENV KAFKA_HOME="/opt/kafka" \
     KAFKA_CONF_FILE="/etc/kafka/server.properties"
 
-COPY --from=0 /tmp/kfk/kafka "$KAFKA_HOME"
-
-COPY entrypoint.sh /entrypoint.sh
-
 RUN set -ex \
   ; useradd kafka --uid 1000 -m -s /bin/bash \
   ; usermod -g root kafka \
-  ; chown -R 1000:1000 "$KAFKA_HOME" \
   ; mkdir -pv "/etc/kafka" && chown -R 1000:1000 "/etc/kafka"
+
+COPY --from=0 --chown=1000:1000 /tmp/kfk/kafka "$KAFKA_HOME"
+
+COPY entrypoint.sh /entrypoint.sh
 
 WORKDIR $KAFKA_HOME
 EXPOSE 9092
