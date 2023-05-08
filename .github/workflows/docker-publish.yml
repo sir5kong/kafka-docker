@@ -35,7 +35,7 @@ jobs:
                 echo "latest_tag=latest" >> $GITHUB_OUTPUT
               else
                 echo "latest_tag=$GITHUB_REF_NAME" >> $GITHUB_OUTPUT
-              if
+              fi
             fi
           fi
       -
