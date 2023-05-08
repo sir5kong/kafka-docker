@@ -62,6 +62,6 @@ jobs:
           tags: |
             ${{ env.CR_REPO }}:v${{ env.KAFKA_VERSION }}-${{ steps.vars.outputs.sha_short }}
             ${{ env.CR_REPO }}:${{ github.ref_name }}
-            ${{ env.CR_REPO }}:v${{ env.KAFKA_VERSION }}
             ${{ env.CR_REPO }}:v${{ steps.vars.outputs.kafka_version_short }}
+            ${{ env.CR_REPO }}:v${{ env.KAFKA_VERSION }}
             ${{ env.CR_REPO }}:latest

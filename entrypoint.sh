@@ -76,7 +76,7 @@ init_nodeid() {
       get_nodeid_from_suffix "$POD_NAME"
     fi
   fi
-  if [[ -z "KAFKA_CFG_NODE_ID" ]]; then
+  if [[ -z "$KAFKA_CFG_NODE_ID" ]]; then
     export KAFKA_CFG_NODE_ID="1"
   fi
 }
@@ -98,8 +98,33 @@ update_server_conf() {
   echo "${key}=${value}" >> "$KAFKA_CONF_FILE"
 }
 
+set_kafka_cfg_default() {
+  if [[ -z "$KAFKA_CFG_NODE_ID" ]]; then
+    export KAFKA_CFG_NODE_ID="1"
+  fi
+  if [[ -z "$KAFKA_CFG_PROCESS_ROLES" ]]; then
+    export KAFKA_CFG_PROCESS_ROLES="broker,controller"
+  fi
+  if [[ -z "$KAFKA_CFG_LISTENERS" ]]; then
+    export KAFKA_CFG_LISTENERS="CONTROLLER://:9090,PLAINTEXT://:9092"
+  fi
+  if [[ -z "$KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP" ]]; then
+    export KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP="CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT"
+  fi
+  if [[ -z "$KAFKA_CFG_INTER_BROKER_LISTENER_NAME" ]]; then
+    export KAFKA_CFG_INTER_BROKER_LISTENER_NAME="PLAINTEXT"
+  fi
+  if [[ -z "$KAFKA_CFG_CONTROLLER_LISTENER_NAMES" ]]; then
+    export KAFKA_CFG_CONTROLLER_LISTENER_NAMES="CONTROLLER"
+  fi
+  if [[ -z "$KAFKA_CFG_CONTROLLER_QUORUM_VOTERS" ]]; then
+    export KAFKA_CFG_CONTROLLER_QUORUM_VOTERS="1@127.0.0.1:9090"
+  fi
+}
+
 init_server_conf() {
   init_nodeid
+  set_kafka_cfg_default
   fix_external_advertised_listeners
   if [[ ! -f "$KAFKA_CONF_FILE" ]]; then
     mkdir -p "$(dirname $KAFKA_CONF_FILE)"

@@ -1,0 +1,15 @@
+version: "3"
+
+volumes:
+  kafka-data: {}
+
+services:
+  kafka:
+    image: sir5kong/kafka:v3.3.2
+    # restart: always
+    ports:
+      - '9092:9092'
+    volumes:
+      - kafka-data:/opt/kafka/data
+    environment:
+      - KAFKA_HEAP_OPTS=-Xmx512m -Xms512m
