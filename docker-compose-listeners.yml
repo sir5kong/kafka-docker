@@ -3,6 +3,13 @@ version: "3"
 volumes:
   kafka-data: {}
 
+### 自定义服务端口
+## Controller: 29091
+## Broker: 29092
+## bootstrap-server: ${KAFKA_HOST_IP_ADDR}:29092
+## web UI: 28080
+## 访问 web UI http://${KAFKA_HOST_IP_ADDR}:28080
+
 services:
   kafka:
     image: sir5kong/kafka:v3.3.2
@@ -11,9 +18,20 @@ services:
     volumes:
       - kafka-data:/opt/kafka/data
     environment:
-      - KAFKA_HEAP_OPTS=-Xmx512m -Xms512m
+      - KAFKA_HEAP_OPTS=-Xmx1024m -Xms1024m
       - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT
-      ## bootstrap-server: HOST_IP_ADDRESS:29092
       - KAFKA_CFG_LISTENERS=CONTROLLER://:29091,PLAINTEXT://:29092
       - KAFKA_CFG_NODE_ID=1
       - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=1@127.0.0.1:29091
+
+  ## 可视化管理工具 kafka-ui (可选)
+  kafka-ui:
+    image: provectuslabs/kafka-ui
+    # restart: always
+    network_mode: host
+    environment:
+      ## server_port 默认是 8080
+      - server_port=28080
+      - KAFKA_CLUSTERS_0_NAME=sir5kong-demo
+      - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=127.0.0.1:29092
+      #- KAFKA_CLUSTERS_0_READONLY=true

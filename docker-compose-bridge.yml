@@ -1,0 +1,40 @@
+version: "3"
+
+volumes:
+  kafka-data: {}
+
+## 请在 .env 文件中写入主机 ip 地址，例如: KAFKA_HOST_IP_ADDR="172.16.2.32"
+
+### 服务端口
+## Controller: 9091
+## Broker Internal: 9092
+## Broker External: 29092
+## echo "bootstrap-server: ${KAFKA_HOST_IP_ADDR}:29092"
+## 访问 web UI http://${KAFKA_HOST_IP_ADDR}:18080
+
+services:
+  kafka:
+    image: sir5kong/kafka:v3.3.2
+    # restart: always
+    ports:
+      - "29092:29092"
+    volumes:
+      - kafka-data:/opt/kafka/data
+    environment:
+      - KAFKA_HEAP_OPTS=-Xmx1024m -Xms1024m
+      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT,EXTERNAL:PLAINTEXT
+      - KAFKA_CFG_LISTENERS=CONTROLLER://:9091,PLAINTEXT://:9092,EXTERNAL://:29092
+      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://:9092,EXTERNAL://${KAFKA_HOST_IP_ADDR}:29092
+      - KAFKA_CFG_NODE_ID=1
+      - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=1@127.0.0.1:9091
+
+  ## 可视化管理工具 kafka-ui (可选)
+  kafka-ui:
+    image: provectuslabs/kafka-ui
+    # restart: always
+    ports:
+      - "18080:8080"
+    environment:
+      - KAFKA_CLUSTERS_0_NAME=sir5kong-demo
+      - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=kafka:9092
+      #- KAFKA_CLUSTERS_0_READONLY=true

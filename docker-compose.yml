@@ -3,12 +3,14 @@ version: "3"
 volumes:
   kafka-data: {}
 
+## broker 默认端口 9092
+## bootstrap-server: ${KAFKA_HOST_IP_ADDR}:9092
+
 services:
   kafka:
     image: sir5kong/kafka:v3.3.2
     # restart: always
     network_mode: host
-    ## bootstrap-server: HOST_IP_ADDRESS:9092
     volumes:
       - kafka-data:/opt/kafka/data
     environment:
