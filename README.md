@@ -1,4 +1,4 @@
-# Kafka helm chart
+# Kafka 容器化部署方案
 
 本项目全面兼容 `KRaft`, 不依赖 ZooKeeper.
 
