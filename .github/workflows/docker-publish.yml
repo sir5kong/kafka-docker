@@ -2,6 +2,10 @@ name: ci
 
 on:
   push:
+    paths:
+      - Dockerfile
+      - entrypoint.sh
+      - '.github/workflows/*'
     branches:
       - main
     tags:        
