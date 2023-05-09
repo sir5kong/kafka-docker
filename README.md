@@ -1,21 +1,19 @@
 # Kafka helm chart
 
-- 全面兼容 `KRaft`, 不依赖 ZooKeeper
-- 外部暴露支持 `NodePort` 和 `LoadBalancer`
-- 集成 [kafka-ui](https://github.com/provectus/kafka-ui) 和 [Kafka exporter](https://github.com/danielqsj/kafka_exporter)
-
-## 拥抱 KRaft
-
-老版本的 Kafka 必须与 ZooKeeper 一起运行，哪怕一个最小的集群也需要同时部署一个 Kafka 和一个 ZooKeeper。有了 KRaft 这种耦合得到解放，并且 KRaft 解决了 Kafka 许多紧迫的可扩展性和性能问题。
+本项目全面兼容 `KRaft`, 不依赖 ZooKeeper.
 
 - Kafka 2.8 版本，KRaft 体验版发布。
 - Kafka 3.3 版本，KRaft 被标记为 `production-ready`.
 - 在即将发布的 Kafka 3.5 版本中会弃用 ZooKeeper.
 - 计划在 Kafka 4.0 版本中完全删除 ZooKeeper 模式。
 
-本项目提前弃用 ZooKeeper，你可以使用 helm chart 快速部署一套 KRaft 集群，推荐选择 Kafka 3.3 及以上版本。
-
 ## Docker 部署
+
+[docker hub](https://hub.docker.com/r/sir5kong/kafka)
+
+``` shell
+docker pull sir5kong/kafka:v3.3.2
+```
 
 ``` shell
 docker run -d --name kafka-server \
@@ -41,12 +39,14 @@ version: "3"
 volumes:
   kafka-data: {}
 
+## broker 默认端口 9092
+## bootstrap-server: ${KAFKA_HOST_IP_ADDR}:9092
+
 services:
   kafka:
     image: sir5kong/kafka:v3.3.2
     # restart: always
     network_mode: host
-    ## bootstrap-server: HOST_IP_ADDRESS:9092
     volumes:
       - kafka-data:/opt/kafka/data
     environment:
@@ -54,7 +54,7 @@ services:
 
 ```
 
-自定义端口号，比如 controller 使用`29091` 端口，broker 使用 `29092` 端口:
+使用主机网络模式需要选择空闲的端口号，以下是自定义端口的案例:
 
 ``` yaml
 version: "3"
@@ -62,6 +62,14 @@ version: "3"
 volumes:
   kafka-data: {}
 
+### 自定义服务端口
+##  Controller: 29091
+##  Broker: 29092
+##  bootstrap-server: ${KAFKA_HOST_IP_ADDR}:29092
+##  web UI: 28080
+##  访问 web UI http://${KAFKA_HOST_IP_ADDR}:28080
+###
+
 services:
   kafka:
     image: sir5kong/kafka:v3.3.2
@@ -70,14 +78,28 @@ services:
     volumes:
       - kafka-data:/opt/kafka/data
     environment:
-      - KAFKA_HEAP_OPTS=-Xmx512m -Xms512m
+      - KAFKA_HEAP_OPTS=-Xmx1024m -Xms1024m
       - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT
-      ## bootstrap-server: HOST_IP_ADDRESS:29092
       - KAFKA_CFG_LISTENERS=CONTROLLER://:29091,PLAINTEXT://:29092
       - KAFKA_CFG_NODE_ID=1
       - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=1@127.0.0.1:29091
 
+  ## 可视化管理工具 kafka-ui (可选)
+  kafka-ui:
+    image: provectuslabs/kafka-ui:v0.6.2
+    # restart: always
+    network_mode: host
+    environment:
+      ## server_port 默认是 8080
+      - server_port=28080
+      - KAFKA_CLUSTERS_0_NAME=sir5kong-demo
+      - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=127.0.0.1:29092
+      #- KAFKA_CLUSTERS_0_READONLY=true
+
 ```
+
+- 使用桥接网络请参考 [examples](examples/docker-compose-bridge.yml)
+- 更多部署案例和注解请参考 [examples](examples/)
 
 ## helm 部署案例
 
