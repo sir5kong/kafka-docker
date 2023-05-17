@@ -105,9 +105,6 @@ set_kafka_cfg_default() {
   if [[ -z "$KAFKA_CFG_PROCESS_ROLES" ]]; then
     export KAFKA_CFG_PROCESS_ROLES="broker,controller"
   fi
-  if [[ -z "$KAFKA_CFG_LISTENERS" ]]; then
-    export KAFKA_CFG_LISTENERS="CONTROLLER://:19091,PLAINTEXT://:9092"
-  fi
   if [[ -z "$KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP" ]]; then
     export KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP="CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT"
   fi
@@ -117,8 +114,16 @@ set_kafka_cfg_default() {
   if [[ -z "$KAFKA_CFG_CONTROLLER_LISTENER_NAMES" ]]; then
     export KAFKA_CFG_CONTROLLER_LISTENER_NAMES="CONTROLLER"
   fi
+  ##
+  ## KAFKA_CONTROLLER_LISTENER_PORT default value: 19091
+  local ctl_port="${KAFKA_CONTROLLER_LISTENER_PORT-19091}"
+  ## KAFKA_CONTROLLER_LISTENER_PORT default value: 9092
+  local broker_port="${KAFKA_BROKER_LISTENER_PORT-9092}"
+  if [[ -z "$KAFKA_CFG_LISTENERS" ]]; then
+    export KAFKA_CFG_LISTENERS="CONTROLLER://:${ctl_port},PLAINTEXT://:${broker_port}"
+  fi
   if [[ -z "$KAFKA_CFG_CONTROLLER_QUORUM_VOTERS" ]]; then
-    export KAFKA_CFG_CONTROLLER_QUORUM_VOTERS="1@127.0.0.1:19091"
+    export KAFKA_CFG_CONTROLLER_QUORUM_VOTERS="${KAFKA_CFG_NODE_ID}@127.0.0.1:${ctl_port}"
   fi
 }
 
@@ -141,7 +146,7 @@ init_server_conf() {
 }
 
 reset_log_dirs() {
-  # protect log.dirs
+  ## protect log.dirs
   sed -i "/^log.dir *=/d" "$KAFKA_CONF_FILE"
   update_server_conf "log.dirs" "$KAFKA_CFG_LOG_DIR"
 }
