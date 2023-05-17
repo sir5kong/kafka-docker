@@ -12,6 +12,8 @@ Apache [Kafka](https://kafka.apache.org/) 容器化解决方案以及部署案�
 
 - [GitHub](https://github.com/sir5kong/kafka-docker)
 - [Docker Hub](https://hub.docker.com/r/sir5kong/kafka)
+- [Dockerfile](https://github.com/sir5kong/kafka-docker/blob/main/Dockerfile)
+- 初始化脚本 [entrypoint.sh](https://github.com/sir5kong/kafka-docker/blob/main/entrypoint.sh)
 
 ## Docker 部署
 
@@ -98,7 +100,7 @@ Kafka 所有配置项可以通过环境变量覆盖，除了 `log.dir` 和 `log.
 
 ## helm chart 部署案例
 
-[kafka-helm-chart](charts/kafka/)
+[kafka-helm-chart](https://github.com/sir5kong/kafka-docker/tree/main/charts/kafka)
 
 ``` shell
 git clone https://github.com/sir5kong/kafka-docker.git
