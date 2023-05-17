@@ -15,3 +15,5 @@ services:
       - kafka-data:/opt/kafka/data
     environment:
       - KAFKA_HEAP_OPTS=-Xmx512m -Xms512m
+      #- KAFKA_CONTROLLER_LISTENER_PORT=19091
+      #- KAFKA_BROKER_LISTENER_PORT=9092
