@@ -2,7 +2,13 @@
 
 Apache [Kafka](https://kafka.apache.org/) 容器化解决方案以及部署案例
 
-[本项目](https://github.com/sir5kong/kafka-docker)全面兼容 `KRaft`, 不依赖 ZooKeeper
+[项目](https://github.com/sir5kong/kafka-docker)特色:
+
+- 全面兼容 `KRaft`, 不依赖 ZooKeeper
+- 灵活使用环境变量进行配置覆盖
+- 提供 `helm chart`，支持 kubernetes 集群外访问
+
+相关链接:
 
 - [GitHub](https://github.com/sir5kong/kafka-docker)
 - [Docker Hub](https://hub.docker.com/r/sir5kong/kafka)
