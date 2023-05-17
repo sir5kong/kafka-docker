@@ -117,7 +117,7 @@ set_kafka_cfg_default() {
   ##
   ## KAFKA_CONTROLLER_LISTENER_PORT default value: 19091
   local ctl_port="${KAFKA_CONTROLLER_LISTENER_PORT-19091}"
-  ## KAFKA_CONTROLLER_LISTENER_PORT default value: 9092
+  ## KAFKA_BROKER_LISTENER_PORT default value: 9092
   local broker_port="${KAFKA_BROKER_LISTENER_PORT-9092}"
   if [[ -z "$KAFKA_CFG_LISTENERS" ]]; then
     export KAFKA_CFG_LISTENERS="CONTROLLER://:${ctl_port},PLAINTEXT://:${broker_port}"
