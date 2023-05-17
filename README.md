@@ -2,11 +2,12 @@
 
 Apache [Kafka](https://kafka.apache.org/) 容器化解决方案以及部署案例
 
-本项目全面兼容 `KRaft`, 不依赖 ZooKeeper
+[本项目](https://github.com/sir5kong/kafka-docker)全面兼容 `KRaft`, 不依赖 ZooKeeper
+
+- [GitHub](https://github.com/sir5kong/kafka-docker)
+- [Docker Hub](https://hub.docker.com/r/sir5kong/kafka)
 
 ## Docker 部署
-
-[docker hub](https://hub.docker.com/r/sir5kong/kafka)
 
 ``` shell
 ## broker 默认端口 9092
