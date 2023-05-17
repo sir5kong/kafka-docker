@@ -70,7 +70,7 @@ jobs:
           context: .
           push: true
           build-args: |
-            kafka_version=${{ env.KAFKA_VERSION }}
+            kafka_version=${{ steps.vars.outputs.kafka_version }}
           tags: |
             ${{ env.CR_REPO }}:${{ steps.vars.outputs.sha_tag }}
             ${{ env.CR_REPO }}:${{ steps.vars.outputs.latest_or_sha }}
