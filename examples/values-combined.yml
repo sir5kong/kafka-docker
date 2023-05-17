@@ -1,7 +1,7 @@
 image:
   repository: sir5kong/kafka
   pullPolicy: IfNotPresent
-  tag: "3.3.2"
+  tag: "v3.3.2"
 
 broker:
   ## broker.combinedMode 混部模式, 将 controller 和 broker 部署在一起

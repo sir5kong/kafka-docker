@@ -3,7 +3,7 @@ exporter:
   image:
     repository: danielqsj/kafka-exporter
     pullPolicy: IfNotPresent
-    tag: "latest"
+    tag: v1.6.0
   ## exporter.podAnnotations
   podAnnotations:
     prometheus.io/path: /metrics

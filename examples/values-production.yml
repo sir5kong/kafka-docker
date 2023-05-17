@@ -1,7 +1,7 @@
 image:
   repository: sir5kong/kafka
   pullPolicy: IfNotPresent
-  tag: "3.3.2"
+  tag: "v3.3.2"
 
 controller:
   replicaCount: 3

@@ -3,7 +3,7 @@ ui:
   image:
     repository: provectuslabs/kafka-ui
     pullPolicy: IfNotPresent
-    tag: "latest"
+    tag: v0.6.2
 
   ingress:
     enabled: true
