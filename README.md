@@ -9,6 +9,7 @@ Apache [Kafka](https://kafka.apache.org/) 容器化解决方案以及部署案�
 [docker hub](https://hub.docker.com/r/sir5kong/kafka)
 
 ``` shell
+## broker 默认端口 9092
 docker run -d --name kafka-server \
   --network host \
   sir5kong/kafka:v3.3
@@ -60,7 +61,7 @@ services:
 
 ```
 
-- 使用桥接网络请参考 [examples](examples/docker-compose-bridge.yml)
+- 使用桥接网络请参考 [examples/docker-compose-bridge.yml](examples/docker-compose-bridge.yml)
 - 更多部署案例和注解请参考 [examples](examples/)
 
 ## 环境变量
@@ -90,7 +91,7 @@ Kafka 所有配置项可以通过环境变量覆盖，除了 `log.dir` 和 `log.
 
 ## helm chart 部署案例
 
-[chart](charts/kafka/)
+[kafka-helm-chart](charts/kafka/)
 
 ``` shell
 git clone https://github.com/sir5kong/kafka-docker.git
