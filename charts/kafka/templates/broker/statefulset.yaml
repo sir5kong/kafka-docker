@@ -97,21 +97,17 @@ spec:
         volumeMounts:
         - mountPath: /opt/kafka/data
           name: data
+          subPath: data
         - mountPath: /opt/kafka/logs
-          name: logs
+          name: data
+          subPath: logs
         - mountPath: /entrypoint.sh
           name: entrypoint-sh
           subPath: entrypoint.sh
-        - mountPath: /kafka-share
-          name: share-data
-      terminationGracePeriodSeconds: 30
       initContainers:
         {{- include "kafka.initContainer.checkClusterId" . | nindent 8 }}
+      terminationGracePeriodSeconds: {{ $thisValues.terminationGracePeriodSeconds }}
       volumes:
-      - name: logs
-        emptyDir: {}
-      - name: share-data
-        emptyDir: {}
       - name: entrypoint-sh
         configMap:
           items:

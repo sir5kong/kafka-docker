@@ -36,6 +36,7 @@ broker:
   combinedMode:
     enabled: false
   replicaCount: 1
+  terminationGracePeriodSeconds: 60
   heapOpts: "-Xms512m -Xmx512m"
   commonEnvs: {}
   extraEnvs: {}
@@ -59,7 +60,8 @@ broker:
   readinessProbe:
     tcpSocket:
       port: broker
-    initialDelaySeconds: 10
+    initialDelaySeconds: 50
+    periodSeconds: 10
     timeoutSeconds: 1
     failureThreshold: 3
 
@@ -68,6 +70,7 @@ broker:
     tcpSocket:
       port: broker
     initialDelaySeconds: 300
+    periodSeconds: 30
     timeoutSeconds: 5
     failureThreshold: 5
 
@@ -109,6 +112,7 @@ broker:
 controller:
   enabled: true
   replicaCount: 1
+  terminationGracePeriodSeconds: 60
   heapOpts: "-Xms512m -Xmx512m"
   commonEnvs: {}
   extraEnvs: {}
@@ -208,14 +212,11 @@ ui:
     annotations: {}
       # nginx.ingress.kubernetes.io/whitelist-source-range: 10.0.0.0/8,192.168.0.0/16
     hosts:
-      - host: chart-example.local
-        paths:
-          - path: /
-            pathType: ImplementationSpecific
+      - host: kafka-ui.example.com
     tls: []
-    #  - secretName: chart-example-tls
+    #  - secretName: kafka-example-tls
     #    hosts:
-    #      - chart-example.local
+    #      - kafka-ui.example.com
 
   ## ui.nodeSelector
   nodeSelector: {}

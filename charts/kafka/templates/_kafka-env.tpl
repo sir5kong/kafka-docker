@@ -32,7 +32,7 @@ controller env
 */}}
 {{- define "kafka.controller.containerEnv" -}}
 - name: KAFKA_HEAP_OPTS
-  value: {{ .Values.broker.heapOpts | quote }}
+  value: {{ .Values.controller.heapOpts | quote }}
 - name: KAFKA_CFG_PROCESS_ROLES
   value: controller
 - name: KAFKA_CFG_LISTENERS
