@@ -20,9 +20,9 @@
             The CLUSTER_ID currently deployed is $KAFKA_CLUSTER_ID, \
             and The stored CLUSTER_ID in KAFKA_CFG_LOG_DIR is $meta_clusterid"
           echo "[ERROR] CLUSTER_ID Exception, \
-            Use \"--set clusterId=$meta_clusterid\" to continue, \
+            Use \"--set clusterId=$meta_clusterid\" to continue helm deploy, \
             Or clean up KAFKA_CFG_LOG_DIR and deploy a new cluster. \
-            See Github pages"
+            See https://github.com/sir5kong/kafka-docker"
           exit "500"
         fi
       fi

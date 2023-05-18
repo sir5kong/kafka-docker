@@ -36,7 +36,7 @@ controller env
 - name: KAFKA_CFG_PROCESS_ROLES
   value: controller
 - name: KAFKA_CFG_LISTENERS
-  value: "CONTROLLER://:{{ .Values.containerPort.controller }}"
+  value: "CONTROLLER://0.0.0.0:{{ .Values.containerPort.controller }}"
 - name: KAFKA_CFG_CONTROLLER_LISTENER_NAMES
   value: CONTROLLER
 - name: KAFKA_CFG_CONTROLLER_QUORUM_VOTERS
@@ -66,6 +66,14 @@ broker env
   valueFrom:
     fieldRef:
       fieldPath: status.hostIP
+- name: POD_IP
+  valueFrom:
+    fieldRef:
+      fieldPath: status.podIP
+- name: POD_NAME
+  valueFrom:
+    fieldRef:
+      fieldPath: metadata.name
 - name: KAFKA_HEAP_OPTS
   value: {{ .Values.broker.heapOpts | quote }}
 - name: KAFKA_CFG_PROCESS_ROLES
@@ -76,15 +84,15 @@ broker env
   {{- end }}
 - name: KAFKA_CFG_LISTENERS
   {{- if .Values.broker.combinedMode.enabled }}
-  value: "BROKER://:{{ .Values.containerPort.broker }},EXTERNAL://:{{ .Values.containerPort.brokerExternal }},CONTROLLER://:{{ .Values.containerPort.controller }}"
+  value: "BROKER://0.0.0.0:{{ .Values.containerPort.broker }},EXTERNAL://0.0.0.0:{{ .Values.containerPort.brokerExternal }},CONTROLLER://0.0.0.0:{{ .Values.containerPort.controller }}"
   {{- else }}
-  value: "BROKER://:{{ .Values.containerPort.broker }},EXTERNAL://:{{ .Values.containerPort.brokerExternal }}"
+  value: "BROKER://0.0.0.0:{{ .Values.containerPort.broker }},EXTERNAL://0.0.0.0:{{ .Values.containerPort.brokerExternal }}"
   {{- end }}
+- name: KAFKA_CFG_ADVERTISED_LISTENERS
+  value: "BROKER://$(POD_IP):{{ .Values.containerPort.broker }}"
 {{- if .Values.broker.external.enabled }}
 - name: KAFKA_EXTERNAL_SERVICE_TYPE
   value: {{ .Values.broker.external.service.type | quote }}
-- name: KAFKA_CFG_ADVERTISED_LISTENERS
-  value: "BROKER://:{{ .Values.containerPort.broker }}"
 - name: KAFKA_EXTERNAL_ADVERTISED_LISTENERS
   value: {{ (include "kafka.external.advertisedListeners" .) | quote }}
 {{- end }}
@@ -111,10 +119,6 @@ broker env
       key: clusterId
 - name: KAFKA_NODE_ID
   value: "podnameSuffix"
-- name: POD_NAME
-  valueFrom:
-    fieldRef:
-      fieldPath: metadata.name
 {{- if not .Values.broker.combinedMode.enabled }}
 - name: KAFKA_NODE_ID_OFFSET
   value: "1000"
