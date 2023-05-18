@@ -120,7 +120,7 @@ controller:
     enabled: true
     size: 20Gi
     # storageClass: "gp2"
-  # resources for controller
+  ## controller.resources
   resources:
     limits:
       cpu: 4
@@ -128,31 +128,39 @@ controller:
     requests:
       cpu: 100m
       memory: 1Gi
-  # readiness probe for controller
+
+  ## controller.readinessProbe
   readinessProbe:
     tcpSocket:
       port: controller
-    initialDelaySeconds: 10
+    initialDelaySeconds: 50
+    periodSeconds: 10
     timeoutSeconds: 1
     failureThreshold: 3
-  # liveness probe for controller
+
+  ## controller.livenessProbe
   livenessProbe:
     tcpSocket:
       port: controller
     initialDelaySeconds: 300
+    periodSeconds: 30
     timeoutSeconds: 5
     failureThreshold: 5
-  # nodeSelector for controller
+
+  ## controller.nodeSelector
   nodeSelector: {}
   tolerations: []
-  # affinity: {}
-  # affinity for controller
+
+  ## controller.antiAffinity
   antiAffinity: soft
   antiAffinityTopologyKey: kubernetes.io/hostname
   nodeAffinity: {}
+
+  ## controller.updateStrategy
   updateStrategy:
     type: RollingUpdate
-  # service for controller
+
+  ## controller.service
   service:
     type: ClusterIP
     port: 9090
@@ -165,6 +173,7 @@ exporter:
     pullPolicy: IfNotPresent
     tag: "latest"
   podAnnotations: {}
+  podLabels: {}
   nodeSelector: {}
   tolerations: []
   affinity: {}

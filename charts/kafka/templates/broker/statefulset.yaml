@@ -104,6 +104,10 @@ spec:
         - mountPath: /entrypoint.sh
           name: entrypoint-sh
           subPath: entrypoint.sh
+        lifecycle:
+          preStop:
+            exec:
+              command: ["sh", "-c", "sleep 10; bin/kafka-server-stop.sh"]
       initContainers:
         {{- include "kafka.initContainer.checkClusterId" . | nindent 8 }}
       terminationGracePeriodSeconds: {{ $thisValues.terminationGracePeriodSeconds }}
