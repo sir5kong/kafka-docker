@@ -177,8 +177,9 @@ KAFKA BOOTSTRAPSERVERS
 {{- $brokerReplicaCount := int .Values.broker.replicaCount -}}
 {{- $brokerFullName := include "kafka.broker.fullname" . -}}
 {{- $serviceName := include "kafka.broker.headless.serviceName" . -}}
+{{- $namespace := .Release.Namespace -}}
 {{- range $i := until $brokerReplicaCount -}}
-  {{- $servers = printf "%s-%d.%s:%d" $brokerFullName $i $serviceName $brokerPort | append $servers -}}
+  {{- $servers = printf "%s-%d.%s.%s:%d" $brokerFullName $i $serviceName $namespace $brokerPort | append $servers -}}
 {{- end -}}
 {{ join "," $servers }}
 {{- end -}}
