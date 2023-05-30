@@ -80,11 +80,7 @@ kafka-controller
 kafka-broker
 */}}
 {{- define "kafka.broker.fullname" -}}
-{{- if .Values.broker.combinedMode.enabled }}
-  {{- printf "%s-combined-broker" (include "kafka.fullname" .) }}
-{{- else }}
   {{- printf "%s-broker" (include "kafka.fullname" .) }}
-{{- end }}
 {{- end }}
 
 {{/*

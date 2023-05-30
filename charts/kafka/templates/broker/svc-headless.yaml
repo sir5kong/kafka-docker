@@ -11,6 +11,9 @@ metadata:
 spec:
   type: ClusterIP
   clusterIP: None
+  {{- if .Values.broker.combinedMode.enabled }}
+  publishNotReadyAddresses: true
+  {{- end }}
   ports:
     - port: {{ .Values.broker.service.port }}
       targetPort: broker

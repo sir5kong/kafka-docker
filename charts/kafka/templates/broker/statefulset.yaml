@@ -2,6 +2,7 @@
 {{- $thisFullName := include "kafka.broker.fullname" . }}
 {{- $componet := include "kafka.broker.componet" . }}
 {{- $brokerFullName := $thisFullName }}
+{{- $brokerPort := .Values.containerPort.broker }}
 {{- $antiAffinityTopologyKey := default "kubernetes.io/hostname" $thisValues.antiAffinityTopologyKey }}
 ---
 apiVersion: apps/v1
@@ -82,12 +83,22 @@ spec:
         #  value: "foo"
         ports:
           {{- include "kafka.broker.containerPorts" . | nindent 8 }}
-        {{- with $thisValues.livenessProbe }}
         livenessProbe:
+          exec:
+            command:
+            - sh
+            - -c
+            - bin/kafka-broker-api-versions.sh --bootstrap-server=127.0.0.1:{{ $brokerPort }}
+        {{- with $thisValues.livenessProbe }}
           {{- toYaml . | nindent 10 }}
         {{- end }}
-        {{- with $thisValues.readinessProbe }}
         readinessProbe:
+          exec:
+            command:
+            - sh
+            - -c
+            - bin/kafka-broker-api-versions.sh --bootstrap-server=127.0.0.1:{{ $brokerPort }}
+        {{- with $thisValues.readinessProbe }}
           {{- toYaml . | nindent 10 }}
         {{- end }}
         {{- with $thisValues.resources }}
