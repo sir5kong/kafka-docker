@@ -38,8 +38,8 @@ broker:
   replicaCount: 1
   terminationGracePeriodSeconds: 60
   heapOpts: "-Xms512m -Xmx512m"
-  commonEnvs: {}
-  extraEnvs: {}
+  commonEnvs: []
+  extraEnvs: []
 
   ## broker.persistence
   persistence:
@@ -114,8 +114,8 @@ controller:
   replicaCount: 1
   terminationGracePeriodSeconds: 60
   heapOpts: "-Xms512m -Xmx512m"
-  commonEnvs: {}
-  extraEnvs: {}
+  commonEnvs: []
+  extraEnvs: []
   persistence:
     enabled: true
     size: 20Gi

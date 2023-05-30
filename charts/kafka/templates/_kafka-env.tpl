@@ -53,7 +53,7 @@ controller env
     fieldRef:
       fieldPath: metadata.name
 {{- with .Values.controller.extraEnvs }}
-  {{- toYaml . }}
+  {{- toYaml . | nindent 0 }}
 {{- end }}
 {{- end }}
 
@@ -124,7 +124,7 @@ broker env
   value: "1000"
 {{- end }}
 {{- with .Values.broker.extraEnvs }}
-  {{- toYaml . | nindent 8 }}
+  {{- toYaml . | nindent 0 }}
 {{- end }}
 {{- end }}
 
