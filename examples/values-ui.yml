@@ -8,10 +8,14 @@ ui:
   ingress:
     enabled: true
     className: ""
-    annotations:
-      nginx.ingress.kubernetes.io/whitelist-source-range: 10.0.0.0/8,192.168.0.0/16
+    # annotations:
+    #   nginx.ingress.kubernetes.io/whitelist-source-range: 10.0.0.0/8,192.168.0.0/16
     hosts:
       - host: kafka-ui.example.com
-        paths:
-          - path: /
-            pathType: ImplementationSpecific
+        #paths:
+        #  - path: /
+        #    pathType: ImplementationSpecific
+    tls: []
+    #  - secretName: kafka-example-tls
+    #    hosts:
+    #      - kafka-ui.example.com
