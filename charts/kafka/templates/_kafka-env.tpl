@@ -111,6 +111,8 @@ broker env
   value: "2"
 - name: KAFKA_CFG_NUM_PARTITIONS
   value: "8"
+- name: KAFKA_CFG_OFFSETS_TOPIC_REPLICATION_FACTOR
+  value: "3"
 {{- end }}
 - name: KAFKA_CLUSTER_ID
   valueFrom:
