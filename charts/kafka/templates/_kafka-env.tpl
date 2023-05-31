@@ -113,6 +113,10 @@ broker env
   value: "8"
 - name: KAFKA_CFG_OFFSETS_TOPIC_REPLICATION_FACTOR
   value: "3"
+- name: KAFKA_CFG_TRANSACTION_STATE_LOG_REPLICATION_FACTOR
+  value: "3"
+- name: KAFKA_CFG_TRANSACTION_STATE_LOG_MIN_ISR
+  value: "2"
 {{- end }}
 - name: KAFKA_CLUSTER_ID
   valueFrom:
