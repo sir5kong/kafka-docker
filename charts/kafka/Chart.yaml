@@ -3,7 +3,7 @@ name: kafka
 description:  Helm chart for Apache Kafka.
 type: application
 
-version: 2.0.2
+version: 2.0.3
 appVersion: v3.4.0
 
 maintainers:
