@@ -2,8 +2,8 @@ name: Release Charts
 
 on:
   push:
-    tags:        
-      - chart-v[0-9]*
+    branches:
+      - main
 
 jobs:
   release:
