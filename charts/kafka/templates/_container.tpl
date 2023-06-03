@@ -1,7 +1,9 @@
 {{- define "kafka.initContainer.checkClusterId" -}}
 - name: check-clusterid
   image: {{ include "kafka.kafkaImage" . | quote }}
-  imagePullPolicy: IfNotPresent
+  {{- if .Values.image.pullPolicy }}
+  imagePullPolicy: {{ .Values.image.pullPolicy | quote }}
+  {{- end }}
   env:
   - name: KAFKA_CLUSTER_ID
     valueFrom:
