@@ -25,3 +25,4 @@ jobs:
         env:
           #CR_TOKEN: "${{ secrets.MY_GIT_TOKEN }}"
           CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+          RELEASE_NAME_TEMPLATE: "{{ .Name }}-chart-{{ .Version }}"
