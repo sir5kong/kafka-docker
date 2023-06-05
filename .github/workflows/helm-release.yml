@@ -44,4 +44,7 @@ jobs:
           $ALIOSS config -e $OSS_EP -i $OSS_KEY_ID -k $OSS_KEY_SECRET
           rm -f /tmp/index.yaml
           curl -o /tmp/index.yaml -L "$CHART_INDEX_URL"
-          $ALIOSS cp -f /tmp/index.yaml "oss://${OSS_BUCKET}/kafka/index.html"
+          if cat /tmp/index.yaml | grep -E '^apiVersion:' ; then
+            $ALIOSS cp -f /tmp/index.yaml "oss://${OSS_BUCKET}/kafka/index.html"
+          fi
+
