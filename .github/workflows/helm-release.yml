@@ -34,6 +34,7 @@ jobs:
           OSS_KEY_ID: "${{ secrets.OSS_KEY_ID }}"
           OSS_KEY_SECRET: "${{ secrets.OSS_KEY_SECRET }}"
           OSS_EP: "${{ vars.OSS_EP }}"
+          OSS_BUCKET: "${{ vars.OSS_BUCKET }}"
           CHART_INDEX_URL: "${{ vars.CHART_INDEX_URL }}"
         run: |
           export ALIOSS="${HOME}/bin/ossutil"
@@ -41,5 +42,6 @@ jobs:
           curl -o $ALIOSS -L $DL_URL_OSS
           chmod a+rx $ALIOSS
           $ALIOSS config -e $OSS_EP -i $OSS_KEY_ID -k $OSS_KEY_SECRET
+          rm -f /tmp/index.yaml
           curl -o /tmp/index.yaml -L "$CHART_INDEX_URL"
-          $ALIOSS cp -f /tmp/index.yaml "oss://${OSS_EP}/kafka/index.html"
+          $ALIOSS cp -f /tmp/index.yaml "oss://${OSS_BUCKET}/kafka/index.html"
