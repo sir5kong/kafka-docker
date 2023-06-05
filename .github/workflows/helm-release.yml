@@ -23,7 +23,6 @@ jobs:
         name: Run chart-releaser
         uses: helm/chart-releaser-action@v1.5.0
         env:
-          #CR_TOKEN: "${{ secrets.MY_GIT_TOKEN }}"
           CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
           CR_RELEASE_NAME_TEMPLATE: "{{ .Name }}-chart-{{ .Version }}"
       - 
@@ -43,4 +42,4 @@ jobs:
           chmod a+rx $ALIOSS
           $ALIOSS config -e $OSS_EP -i $OSS_KEY_ID -k $OSS_KEY_SECRET
           curl -o /tmp/index.yaml -L "$CHART_INDEX_URL"
-          $ALIOSS cp -f /tmp/index.yaml "${OSS_EP}/kafka/index.html"
+          $ALIOSS cp -f /tmp/index.yaml "oss://${OSS_EP}/kafka/index.html"
