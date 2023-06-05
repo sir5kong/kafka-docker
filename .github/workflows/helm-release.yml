@@ -32,12 +32,13 @@ jobs:
         shell: bash
         env:
           DL_URL_OSS: "https://gosspublic.alicdn.com/ossutil/1.7.1/ossutil64"
-          ALIOSS: "/bin/ossutil"
           OSS_KEY_ID: "${{ secrets.OSS_KEY_ID }}"
           OSS_KEY_SECRET: "${{ secrets.OSS_KEY_SECRET }}"
           OSS_EP: "${{ vars.OSS_EP }}"
           CHART_INDEX_URL: "${{ vars.CHART_INDEX_URL }}"
         run: |
+          export ALIOSS="${HOME}/bin/ossutil"
+          mkdir -p $(dirname $ALIOSS)
           curl -o $ALIOSS -L $DL_URL_OSS
           chmod a+rx $ALIOSS
           $ALIOSS config -e $OSS_EP -i $OSS_KEY_ID -k $OSS_KEY_SECRET
