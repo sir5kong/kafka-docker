@@ -3,7 +3,7 @@ name: OSS Upload
 on:
   push:
     paths:
-      - index.ya?ml
+      - index.yaml
     branches:
       - gh-pages
 
