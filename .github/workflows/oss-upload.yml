@@ -33,7 +33,7 @@ jobs:
           chmod a+rx $ALIOSS
           $ALIOSS config -e $OSS_EP -i $OSS_KEY_ID -k $OSS_KEY_SECRET
           git branch -a
-          git show gh-pages:index.yaml > /tmp/index.yaml
+          git show remotes/origin/gh-pages:index.yaml > /tmp/index.yaml
           head -n50 /tmp/index.yaml
           if head -n50 /tmp/index.yaml | grep -E '^apiVersion:' ; then
             sed -i 's%- https://github\.com/sir5kong%- https://'${MIRROR_HOST}'/github/sir5kong%g' /tmp/index.yaml
