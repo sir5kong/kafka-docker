@@ -1,9 +1,11 @@
 name: OSS Upload
 
 on:
-  push:
-    tags:
-      - kafka*
+  workflow_run:
+    workflows: ["Release Charts"]
+    types: [completed]
+    branches:
+      - main
 
 jobs:
   release:
@@ -36,7 +38,7 @@ jobs:
           git show remotes/origin/gh-pages:index.yaml > /tmp/index.yaml
           head -n50 /tmp/index.yaml
           if head -n50 /tmp/index.yaml | grep -E '^apiVersion:' ; then
-            sed -i 's%- https://github\.com/sir5kong%- https://'${MIRROR_HOST}'/github/sir5kong%g' /tmp/index.yaml
+            sed -i 's%- https://github\.com/%- https://'${MIRROR_HOST}'/github/%g' /tmp/index.yaml
             $ALIOSS cp -f /tmp/index.yaml \
               "oss://${OSS_BUCKET}/kafka/index.yaml" \
               --meta content-type:text/yaml
