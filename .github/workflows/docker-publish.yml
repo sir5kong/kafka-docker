@@ -8,7 +8,7 @@ on:
       - '.github/workflows/docker*'
     branches:
       - main
-    tags:        
+    tags:
       - v[0-9]*
 
 env:

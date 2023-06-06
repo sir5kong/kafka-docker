@@ -2,10 +2,8 @@ name: OSS Upload
 
 on:
   push:
-    paths:
-      - index.yaml
-    branches:
-      - gh-pages
+    tags:
+      - kafka*
 
 jobs:
   release:
@@ -14,6 +12,8 @@ jobs:
       -
         name: Checkout
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
       - 
         name: Upload to OSS
         if: ${{ vars.OSS_MIRROR_ENABLED == 'true' }}
@@ -32,9 +32,10 @@ jobs:
           curl -o $ALIOSS -L $DL_URL_OSS
           chmod a+rx $ALIOSS
           $ALIOSS config -e $OSS_EP -i $OSS_KEY_ID -k $OSS_KEY_SECRET
-          head -n50 index.yaml
-          if head -n50 index.yaml | grep -E '^apiVersion:' ; then
-            sed 's%- https://github\.com/sir5kong%- https://'${MIRROR_HOST}'/github/sir5kong%g' index.yaml > /tmp/index.yaml
+          git show gh-pages:index.yaml > /tmp/index.yaml
+          head -n50 /tmp/index.yaml
+          if head -n50 /tmp/index.yaml | grep -E '^apiVersion:' ; then
+            sed -i 's%- https://github\.com/sir5kong%- https://'${MIRROR_HOST}'/github/sir5kong%g' /tmp/index.yaml
             $ALIOSS cp -f /tmp/index.yaml \
               "oss://${OSS_BUCKET}/kafka/index.yaml" \
               --meta content-type:text/yaml
