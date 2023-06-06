@@ -1,11 +1,11 @@
-name: ci
+name: Docker Publish
 
 on:
   push:
     paths:
       - Dockerfile
       - entrypoint.sh
-      - '.github/workflows/*'
+      - '.github/workflows/docker*'
     branches:
       - main
     tags:        
@@ -25,6 +25,8 @@ jobs:
       - 
         name: Set outputs
         id: vars
+        env:
+          DOCKERHUB_TOKEN: "${{ secrets.DOCKERHUB_TOKEN }}"
         run: |
           sha_short=$(git rev-parse --short HEAD)
           echo "sha_short=$sha_short" >> $GITHUB_OUTPUT
@@ -45,9 +47,15 @@ jobs:
               fi
             fi
           fi
+          if echo "$DOCKERHUB_TOKEN" | grep -Eo '^[a-zA-Z]' > /dev/null ; then
+            echo "dockerhub_token_ok=true" >> $GITHUB_OUTPUT
+          else
+            exit "500"
+          fi
       -
         name: Login to Docker Hub
         uses: docker/login-action@v2
+        if: steps.vars.outputs.dockerhub_token_ok == 'true'
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
