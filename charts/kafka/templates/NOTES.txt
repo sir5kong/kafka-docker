@@ -10,7 +10,7 @@
   {{- end }}
 {{- end }}
 
-{{- if .Values.ui.ingress.enabled }}
+{{- if and (.Values.ui.enabled) (.Values.ui.ingress.enabled) }}
 
 >>> Visit kafka-ui:
   {{- range $host := .Values.ui.ingress.hosts }}
