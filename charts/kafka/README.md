@@ -8,33 +8,56 @@
 ## 部署案例
 
 ``` shell
-git clone https://github.com/sir5kong/kafka-docker.git
-cd kafka-docker
+## 添加 helm 仓库
+helm repo add kafka-repo https://helm-charts.itboon.top/kafka
+helm repo update kafka-repo
+```
 
-# kubectl create namespace your-namespace
-
+``` shell
 ## 部署单节点集群, 仅启动一个 Pod
-helm install kafka -n your-namespace -f ./examples/values-combined.yml ./charts/kafka
+## 这里关闭持久化存储，仅演示部署效果
+helm upgrade --install kafka \
+  --namespace kafka-demo \
+  --create-namespace \
+  --set broker.combinedMode.enabled="true" \
+  --set broker.persistence.enabled="false" \
+  kafka-repo/kafka
 
-## 部署生产集群, 3 个 controller 实例, 3 个 broker 实例
-helm install kafka -n your-namespace -f ./examples/values-production.yml ./charts/kafka
+## 部署 1 controller + 1 broker 集群, 并使用持久化存储
+helm upgrade --install kafka \
+  --namespace kafka-demo \
+  --create-namespace \
+  --set broker.persistence.size="20Gi" \
+  kafka-repo/kafka
 
-######  组合使用 values 文件  ######
-## 部署生产集群，并开启 kafka-ui 和 kafka exporter
-helm install kafka -n your-namespace \
-  -f ./examples/values-exporter.yml \
-  -f ./examples/values-ui.yml \
-  -f ./examples/values-production.yml \
-  ./charts/kafka
+## 部署高可用集群, 3 controller + 3 broker
+helm upgrade --install kafka \
+  --namespace kafka-demo \
+  --create-namespace \
+  --set controller.replicaCount="3" \
+  --set broker.replicaCount="3" \
+  --set broker.heapOpts="-Xms4096m -Xmx4096m" \
+  --set broker.resources.requests.memory="6Gi" \
+  kafka-repo/kafka
 
-## 以 NodePort 对集群外暴露
-helm install kafka -n your-namespace -f ./examples/values-nodeport.yml ./charts/kafka
+## 生产集群详细 alues 请参考 https://github.com/sir5kong/kafka-docker/raw/main/examples/values-production.yml
+
 
 ## 以 LoadBalancer 对集群外暴露
-helm install kafka -n your-namespace -f ./examples/values-loadbalancer.yml ./charts/kafka
+helm upgrade --install kafka \
+  --namespace kafka-demo \
+  --create-namespace \
+  --set broker.external.enabled="true" \
+  --set broker.external.service.type="LoadBalancer" \
+  --set broker.external.domainSuffix="kafka.example.com" \
+  kafka-repo/kafka
 
-## 开启 kafka-ui
-helm install kafka -n your-namespace -f ./examples/values-ui.yml ./charts/kafka
+## 以 NodePort 对集群外暴露
+helm upgrade --install kafka \
+  --namespace kafka-demo \
+  --create-namespace \
+  -f https://github.com/sir5kong/kafka-docker/raw/main/examples/values-nodeport.yml \
+  kafka-repo/kafka
 
 ```
 
