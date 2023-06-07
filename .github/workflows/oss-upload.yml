@@ -6,9 +6,12 @@ on:
     types: [completed]
     branches:
       - main
+  #push:
+  #  branches:
+  #    - gh-pages
 
 jobs:
-  release:
+  oss:
     runs-on: ubuntu-latest
     steps:
       -
@@ -41,5 +44,6 @@ jobs:
             sed -i 's%- https://github\.com/%- https://'${MIRROR_HOST}'/github/%g' /tmp/index.yaml
             $ALIOSS cp -f /tmp/index.yaml \
               "oss://${OSS_BUCKET}/kafka/index.yaml" \
-              --meta content-type:text/yaml
+              --meta "content-type:text/plain; charset=utf-8"
           fi
+          $ALIOSS cp -rf ./examples/ "oss://${OSS_BUCKET}/kafka/examples/"
