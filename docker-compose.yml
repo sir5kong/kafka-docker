@@ -8,7 +8,7 @@ volumes:
 
 services:
   kafka:
-    image: sir5kong/kafka:v3.3.2
+    image: sir5kong/kafka:v3.5
     # restart: always
     network_mode: host
     volumes:
