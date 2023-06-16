@@ -6,7 +6,7 @@ Apache [Kafka](https://kafka.apache.org/) 容器化解决方案以及部署案�
 
 - 全面兼容 `KRaft`, 不依赖 ZooKeeper
 - 灵活使用环境变量进行配置覆盖
-- 提供 `helm chart`，支持 kubernetes 集群外访问
+- 提供 Kubernetes `helm chart`，支持集群外访问
 
 相关链接:
 
@@ -21,7 +21,7 @@ Apache [Kafka](https://kafka.apache.org/) 容器化解决方案以及部署案�
 ## broker 默认端口 9092
 docker run -d --name kafka-server \
   --network host \
-  sir5kong/kafka:v3.3
+  sir5kong/kafka:v3.5
 ```
 
 自定义端口号：
@@ -32,7 +32,7 @@ docker run -d --name kafka-server \
   --network host \
   --env KAFKA_CONTROLLER_LISTENER_PORT=29091 \
   --env KAFKA_BROKER_LISTENER_PORT=29092 \
-  sir5kong/kafka:v3.3
+  sir5kong/kafka:v3.5
 ```
 
 启动 kafka server 并持久化数据目录:
@@ -42,7 +42,7 @@ docker volume create kafka_data
 docker run -d --name kafka-server \
   --network host \
   -v kafka_data:/opt/kafka/data \
-  sir5kong/kafka:v3.3
+  sir5kong/kafka:v3.5
 ```
 
 ### Docker Compose
@@ -58,7 +58,7 @@ volumes:
 
 services:
   kafka:
-    image: sir5kong/kafka:v3.3
+    image: sir5kong/kafka:v3.5
     # restart: always
     network_mode: host
     volumes:
@@ -84,7 +84,9 @@ services:
 
 ### 配置覆盖
 
-Kafka 所有配置项可以通过环境变量覆盖，除了 `log.dir` 和 `log.dirs`。环境变量名使用前缀 `KAFKA_CFG_` 加上配置参数，`.` 需要替换为 `_`
+Kafka 所有配置项可以通过环境变量覆盖，除了 `log.dir` 和 `log.dirs`。环境变量名使用前缀 `KAFKA_CFG_` 加上配置参数
+
+> 变量名中 `.` 需要替换为 `_`
 
 例如 `KAFKA_CFG_LISTENERS` 对应配置参数 `listeners`，`KAFKA_CFG_ADVERTISED_LISTENERS` 对应配置参数 `advertised.listeners`
 
