@@ -129,10 +129,25 @@ set_kafka_cfg_default() {
   ## KAFKA_BROKER_LISTENER_PORT default value: 9092
   local broker_port="${KAFKA_BROKER_LISTENER_PORT-9092}"
   if [[ -z "$KAFKA_CFG_LISTENERS" ]]; then
-    export KAFKA_CFG_LISTENERS="CONTROLLER://:${ctl_port},PLAINTEXT://:${broker_port}"
+    export KAFKA_CFG_LISTENERS="CONTROLLER://0.0.0.0:${ctl_port},PLAINTEXT://0.0.0.0:${broker_port}"
   fi
   if [[ -z "$KAFKA_CFG_CONTROLLER_QUORUM_VOTERS" ]]; then
     export KAFKA_CFG_CONTROLLER_QUORUM_VOTERS="${KAFKA_CFG_NODE_ID}@127.0.0.1:${ctl_port}"
+  fi
+  if [[ -z "$KAFKA_CFG_ADVERTISED_LISTENERS" ]]; then
+    get_default_server_addr
+    if echo "$KAFKA_SERVER_ADDR" | grep -E '\S+' &> /dev/null; then
+      export KAFKA_CFG_ADVERTISED_LISTENERS="PLAINTEXT://${KAFKA_SERVER_ADDR}:${broker_port}"
+    fi
+  fi
+}
+
+get_default_server_addr() {
+  if ip route get 1.1.1.1 &> /dev/null ; then
+    local ip="$(ip route get 1.1.1.1 | grep -oP 'src \K\S+')"
+    if echo "$ip" | grep -E '([0-9]+\.){3}[0-9]+' &> /dev/null; then
+      export KAFKA_SERVER_ADDR="$ip"
+    fi
   fi
 }
 

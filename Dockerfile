@@ -26,6 +26,12 @@ RUN set -ex \
 
 COPY --from=0 --chown=1000:1000 /tmp/kfk/kafka "$KAFKA_HOME"
 
+RUN set -ex \
+    ; apt-get update \
+    ; apt-get install \
+      iproute2 -y --no-install-recommends \
+    ; rm -rf /var/lib/apt/lists/*
+
 COPY entrypoint.sh /entrypoint.sh
 
 WORKDIR $KAFKA_HOME
