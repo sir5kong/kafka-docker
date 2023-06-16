@@ -31,9 +31,10 @@ jobs:
           sha_short=$(git rev-parse --short HEAD)
           echo "sha_short=$sha_short" >> $GITHUB_OUTPUT
           echo "[env] GITHUB_REF_NAME: $GITHUB_REF_NAME"
-          if echo "$GITHUB_REF_NAME" | grep -E 'v[0-9.]+(-[a-z][0-9.]+)?'; then
+          if echo "$GITHUB_REF_NAME" | grep -E 'v[0-9.]+(-.*)?'; then
             kafka_version=$(echo "$GITHUB_REF_NAME" | cut -d "-" -f1 | sed 's/^v//')
-            curl -sI https://downloads.apache.org/kafka/${kafka_version}/RELEASE_NOTES.html | grep '200 OK'
+            release_notes_url="https://archive.apache.org/dist/kafka/${kafka_version}/RELEASE_NOTES.html"
+            curl -sI "$release_notes_url" | grep '200 OK'
             if [[ $? == "0" ]]; then
               echo "is_release=true" >> $GITHUB_OUTPUT
               echo "kafka_version=${kafka_version}" >> $GITHUB_OUTPUT
