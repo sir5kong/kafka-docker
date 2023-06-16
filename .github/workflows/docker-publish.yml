@@ -13,7 +13,7 @@ on:
 
 env:
   CR_REPO: sir5kong/kafka
-  KAFKA_VERSION: "3.3.2"
+  KAFKA_VERSION: "3.5.0"
 
 jobs:
   docker:

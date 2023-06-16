@@ -1,7 +1,7 @@
 # builder
 FROM alpine as builder
 
-ARG kafka_version=3.3.2
+ARG kafka_version=3.5.0
 ARG scala_version=2.13
 
 ENV dl_url="https://downloads.apache.org/kafka/${kafka_version}/kafka_${scala_version}-${kafka_version}.tgz"
