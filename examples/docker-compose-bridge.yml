@@ -17,7 +17,7 @@ volumes:
 
 services:
   kafka:
-    image: sir5kong/kafka:v3.3.2
+    image: sir5kong/kafka:v3.5
     # restart: always
     ports:
       - "29092:29092"

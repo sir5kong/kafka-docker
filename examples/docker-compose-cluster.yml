@@ -17,7 +17,7 @@ volumes:
 
 services:
   kafka01:
-    image: sir5kong/kafka:v3.3.2
+    image: sir5kong/kafka:v3.5
     # restart: always
     ports:
       - "29091:29091"
@@ -33,7 +33,7 @@ services:
       - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=1@kafka01:9091,2@kafka02:9091,3@kafka03:9091
 
   kafka02:
-    image: sir5kong/kafka:v3.3.2
+    image: sir5kong/kafka:v3.5
     # restart: always
     ports:
       - "29092:29092"
@@ -49,7 +49,7 @@ services:
       - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=1@kafka01:9091,2@kafka02:9091,3@kafka03:9091
 
   kafka03:
-    image: sir5kong/kafka:v3.3.2
+    image: sir5kong/kafka:v3.5
     # restart: always
     ports:
       - "29093:29093"
