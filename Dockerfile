@@ -4,7 +4,7 @@ FROM alpine as builder
 ARG kafka_version=3.5.0
 ARG scala_version=2.13
 
-ENV dl_url="https://downloads.apache.org/kafka/${kafka_version}/kafka_${scala_version}-${kafka_version}.tgz"
+ENV dl_url="https://archive.apache.org/dist/kafka/${kafka_version}/kafka_${scala_version}-${kafka_version}.tgz"
 
 RUN set -ex \
   ; mkdir -pv /tmp/kfk \
