@@ -1,6 +1,7 @@
 name: Docker Publish
 
 on:
+  workflow_dispatch: ## on button click
   push:
     paths:
       - Dockerfile
