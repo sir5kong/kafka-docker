@@ -59,7 +59,7 @@ volumes:
 services:
   kafka:
     image: sir5kong/kafka:v3.5
-    # restart: always
+    restart: always
     network_mode: host
     volumes:
       - kafka-data:/opt/kafka/data
@@ -70,8 +70,8 @@ services:
 
 ```
 
-- 使用桥接网络请参考 [examples/docker-compose-bridge.yml](examples/docker-compose-bridge.yml)
-- 更多部署案例和注解请参考 [examples](examples/)
+- 使用桥接网络请参考 [examples/docker-compose-bridge.yml](https://github.com/sir5kong/kafka-docker/blob/main/examples/docker-compose-bridge.yml)
+- 更多部署案例和注解请参考 [examples](https://github.com/sir5kong/kafka-docker/tree/main/examples)
 
 ## 环境变量
 
@@ -132,10 +132,11 @@ helm upgrade --install kafka \
   --set controller.replicaCount="3" \
   --set broker.replicaCount="3" \
   --set broker.heapOpts="-Xms4096m -Xmx4096m" \
-  --set broker.resources.requests.memory="6Gi" \
+  --set broker.resources.requests.memory="8Gi" \
+  --set broker.resources.limits.memory="16Gi" \
   kafka-repo/kafka
 
-## 生产集群详细 alues 请参考 https://github.com/sir5kong/kafka-docker/raw/main/examples/values-production.yml
+## 生产集群详细 values 请参考 https://github.com/sir5kong/kafka-docker/raw/main/examples/values-production.yml
 
 
 ## 以 LoadBalancer 对集群外暴露
