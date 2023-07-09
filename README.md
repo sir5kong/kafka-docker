@@ -191,4 +191,4 @@ Add domain name resolution to complete this deployment
 # Multi-language `README.md`
 
 - [English](README.md)
-- [简体中文](README_ZH.md)
+- [简体中文](README-zh.md)

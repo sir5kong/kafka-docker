@@ -3,47 +3,63 @@
 ## Prerequisites
 
 - Kubernetes 1.18+
-- Helm 3.3.0+
+- Helm 3.3+
 
-## 部署案例
+## Get Repository Info
 
 ``` shell
-## 添加 helm 仓库
-helm repo add kafka-repo https://helm-charts.itboon.top/kafka
+helm repo add kafka-repo https://sir5kong.github.io/kafka-docker
 helm repo update kafka-repo
 ```
 
+## Deploy Kafka
+
+### Deploy a single-node cluster
+
+- Turn off persistent storage here, only demonstrate the deployment operation
+
 ``` shell
-## 部署单节点集群, 仅启动一个 Pod
-## 这里关闭持久化存储，仅演示部署效果
 helm upgrade --install kafka \
   --namespace kafka-demo \
   --create-namespace \
   --set broker.combinedMode.enabled="true" \
   --set broker.persistence.enabled="false" \
   kafka-repo/kafka
+```
 
-## 部署 1 controller + 1 broker 集群, 并使用持久化存储
+### One broker and one controller cluster
+
+``` shell
 helm upgrade --install kafka \
   --namespace kafka-demo \
   --create-namespace \
   --set broker.persistence.size="20Gi" \
   kafka-repo/kafka
+```
 
-## 部署高可用集群, 3 controller + 3 broker
+> Persistence storage is used by default.
+
+### Deploy a highly available cluster
+
+``` shell
 helm upgrade --install kafka \
   --namespace kafka-demo \
   --create-namespace \
   --set controller.replicaCount="3" \
   --set broker.replicaCount="3" \
   --set broker.heapOpts="-Xms4096m -Xmx4096m" \
-  --set broker.resources.requests.memory="6Gi" \
+  --set broker.resources.requests.memory="8Gi" \
+  --set broker.resources.limits.memory="16Gi" \
   kafka-repo/kafka
+```
 
-## 生产集群详细 alues 请参考 https://github.com/sir5kong/kafka-docker/raw/main/examples/values-production.yml
+> More values please refer to [examples/values-production.yml](https://github.com/sir5kong/kafka-docker/raw/main/examples/values-production.yml)
 
+### Using LoadBalancer
 
-## 以 LoadBalancer 对集群外暴露
+Enable Kubernetes external cluster access to Kafka brokers.
+
+``` shell
 helm upgrade --install kafka \
   --namespace kafka-demo \
   --create-namespace \
@@ -51,34 +67,25 @@ helm upgrade --install kafka \
   --set broker.external.service.type="LoadBalancer" \
   --set broker.external.domainSuffix="kafka.example.com" \
   kafka-repo/kafka
-
-## 以 NodePort 对集群外暴露
-helm upgrade --install kafka \
-  --namespace kafka-demo \
-  --create-namespace \
-  -f https://github.com/sir5kong/kafka-docker/raw/main/examples/values-nodeport.yml \
-  kafka-repo/kafka
-
 ```
 
-## 混部模式 `combined mode`
+Add domain name resolution to complete this deployment
 
-`process.roles` 可以设置为 `broker` `controller` `broker,controller`, 设为 `broker,controller` 即混部模式。
+## combined mode
 
-混部的服务器部署和运维管理都更加方便，缺点是不方便扩容。例如部署一个高可用集群 3 个 controller 和 3 个 broker，后续如果需要扩容 broker 可以在线操作，不影响业务。如果是混部模式扩容操作会相对复杂，而且会造成业务中断。
-
-以下是官网原文：
+- If process.roles is set to broker, the server acts as a broker.
+- If process.roles is set to controller, the server acts as a controller.
+- If process.roles is set to broker,controller, the server acts as both a broker and a controller.
 
 > Kafka servers that act as both brokers and controllers are referred to as "combined" servers. Combined servers are simpler to operate for small use cases like a development environment. The key disadvantage is that the controller will be less isolated from the rest of the system. For example, it is not possible to roll or scale the controllers separately from the brokers in combined mode. Combined mode is not recommended in critical deployment environments.
 
 ### Chart Values
 
-| Key | 类型 | 默认值 | 描述 |
+| Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| broker.combinedMode.enabled | bool | `false` | 是否开启混部模式 |
+| broker.combinedMode.enabled | bool | `false` | Whether to enable the combined mode |
 
 ``` yaml
-## 混部案例
 broker:
   combinedMode:
     enabled: true
@@ -91,39 +98,33 @@ broker:
 
 ## Cluster ID 
 
-早期版本中，Kafka 会自动初始化数据目录，目前的版本需要提供一个 `Cluster ID` 并手动初始化数据目录：
+In earlier versions, Kafka will automatically initialize the data directory, the current version needs to provide a `Cluster ID` and manually initialize the data directory:
 
 ``` shell
 KAFKA_CLUSTER_ID="$(bin/kafka-storage.sh random-uuid)"
 bin/kafka-storage.sh format -t $KAFKA_CLUSTER_ID -c config/kraft/server.properties
 ```
 
-一个集群所有的节点都需要使用同一个 `Cluster ID`，本项目为了解决这个问题会在首次部署时自动生成一个 `Cluster ID` 并保存到 `Secret`。
+All nodes in a cluster need to use the same `Cluster ID`. In order to solve this problem, this project will automatically generate a `Cluster ID` and save it to `Secret` when it is deployed for the first time.
 
-## node.id
+## External Access
 
-`Cluster ID` 是集群内所有节点共享，而 `node.id` 是每个节点必须唯一。
+In order to connect to the Kafka server outside the cluster, each Broker must be exposed and `advertised.listeners` must be correctly configured.
 
-例如在 `3 controller 3 broker` 的集群里，controller 的 `node.id` 分别是 `0` `1` `2`，跟 StatefulSet Pod 序号一致，但 broker 就不能再使用同样的 id 了。因此本项目引入 `KAFKA_NODE_ID_OFFSET` 这个变量，默认是 `1000`，所以 broker 的 `node.id` 分别是 `1000` `1001` `1002`。
-
-## 外部暴露
-
-想要在集群外连接 Kafka 服务器，必须把每个 Broker 暴露出去，并且正确配置 `advertised.listeners`。
-
-这里支持 2 种暴露方式，`NodePort` 和 `LoadBalancer`，有几个 broker 节点就需要对应数量的 `NodePort` 或 `LoadBalancer`。
+There are two ways to expose, `NodePort` and `LoadBalancer`, each broker node needs a `NodePort` or `LoadBalancer`.
 
 ### Chart Values
 
-| Key | 类型 | 默认值 | 描述 |
+| Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| broker.external.enabled | bool | `false` | 是否开启外部暴露 |
-| broker.external.service.type | string | `NodePort` | 外部暴露类型，支持 `NodePort` 和 `LoadBalancer` |
-| broker.external.service.annotations | object | `{}` | 外部暴露的 service 注解 |
-| broker.external.nodePorts | list | `[]` | `NodePort` 端口号，至少提供一个端口号，如果端口数量少于 broker 节点数，则自动递增 |
-| broker.external.domainSuffix | string | `kafka.example.com` | 使用 `LoadBalancer` 对外暴露则必须使用域名，broker 对应的外部域名是 `POD_NAME` + `域名后缀`，例如 `kafka-broker-0.kafka.example.com`，部署结束后需要完成域名解析配置 |
+| broker.external.enabled | bool | `false` | Whether to enable external access |
+| broker.external.service.type | string | `NodePort` | `NodePort` or `LoadBalancer` |
+| broker.external.service.annotations | object | `{}` | External serivce annotations |
+| broker.external.nodePorts | list | `[]` | Provide at least one port number, if the count of ports is less than the count of broker nodes, it will be automatically incremented |
+| broker.external.domainSuffix | string | `kafka.example.com` | If you use `LoadBalancer` for external access, you must use a domain name. The external domain name corresponding to the broker is `POD_NAME` + `domain name suffix`, such as `kafka-broker-0.kafka.example.com`. After the deployment, you need to complete the domain name resolution operation |
 
 ``` yaml
-## NodePort 案例
+## NodePort example
 broker:
   replicaCount: 3
   external:
@@ -138,7 +139,7 @@ broker:
 ```
 
 ``` yaml
-## LoadBalancer 案例
+## LoadBalancer example
 broker:
   replicaCount: 3
   external:

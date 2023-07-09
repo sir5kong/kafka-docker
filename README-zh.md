@@ -183,4 +183,4 @@ helm upgrade --install kafka \
 # Multi-language `README.md`
 
 - [English](README.md)
-- [简体中文](README_ZH.md)
+- [简体中文](README-zh.md)
