@@ -1,10 +1,10 @@
 image:
   repository: sir5kong/kafka
   pullPolicy: IfNotPresent
-  tag: "v3.3.2"
+  tag: v3.5.0
 
 broker:
-  ## broker.combinedMode 混部模式, 将 controller 和 broker 部署在一起
+  ## broker.combinedMode, the server acts as both a broker and a controller.
   ## process.roles: "broker,controller"
   combinedMode:
     enabled: true

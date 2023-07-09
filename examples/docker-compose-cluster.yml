@@ -64,9 +64,9 @@ services:
       - KAFKA_CFG_NODE_ID=3
       - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=1@kafka01:9091,2@kafka02:9091,3@kafka03:9091
 
-  ## 可视化管理工具 kafka-ui (可选)
+  ## Web UI for managing Kafka clusters (optional)
   kafka-ui:
-    image: provectuslabs/kafka-ui:v0.6.2
+    image: provectuslabs/kafka-ui:v0.7.1
     # restart: always
     ports:
       - "18080:8080"

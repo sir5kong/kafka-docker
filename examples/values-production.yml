@@ -1,7 +1,7 @@
 image:
   repository: sir5kong/kafka
   pullPolicy: IfNotPresent
-  tag: "v3.3.2"
+  tag: v3.5.0
 
 controller:
   replicaCount: 3
@@ -28,7 +28,7 @@ broker:
   resources:
     limits:
       cpu: 4
-      memory: 12Gi
+      memory: 16Gi
     requests:
       cpu: 500m
       memory: 6Gi
