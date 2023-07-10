@@ -3,6 +3,9 @@ name: Release Charts
 on:
   workflow_dispatch: ## on button click
   push:
+    paths:
+      - 'charts/**'
+      - '!charts/*/README.md'
     branches:
       - main
 
