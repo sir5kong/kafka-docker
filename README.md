@@ -127,7 +127,7 @@ Variable examples:
 ### Get Repository Info
 
 ``` shell
-helm repo add kafka-repo https://sir5kong.github.io/kafka-docker
+helm repo add kafka-repo https://helm-charts.itboon.top/kafka
 helm repo update kafka-repo
 ```
 
@@ -186,7 +186,7 @@ helm upgrade --install kafka \
   kafka-repo/kafka
 ```
 
-Add domain name resolution to complete this deployment
+Configure your DNS record to complete this deployment.
 
 # Multi-language `README.md`
 

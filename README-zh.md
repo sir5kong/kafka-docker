@@ -119,7 +119,7 @@ Variable examples:
 ### 获取 helm 仓库
 
 ``` shell
-helm repo add kafka-repo https://sir5kong.github.io/kafka-docker
+helm repo add kafka-repo https://helm-charts.itboon.top/kafka
 helm repo update kafka-repo
 ```
 
@@ -178,7 +178,7 @@ helm upgrade --install kafka \
   kafka-repo/kafka
 ```
 
-上面部署完成后还需要继续添加域名解析。
+上面部署成功后请完成域名解析配置。
 
 # Multi-language `README.md`
 

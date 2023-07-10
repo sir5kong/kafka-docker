@@ -8,7 +8,7 @@
 ## Get Repository Info
 
 ``` shell
-helm repo add kafka-repo https://sir5kong.github.io/kafka-docker
+helm repo add kafka-repo https://helm-charts.itboon.top/kafka
 helm repo update kafka-repo
 ```
 
