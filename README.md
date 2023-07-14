@@ -1,18 +1,18 @@
-# https://github.com/sir5kong/kafka-docker
+[![CI](https://github.com/sir5kong/kafka-docker/actions/workflows/docker-publish.yml/badge.svg)](https://github.com/sir5kong/kafka-docker/actions/workflows/docker-publish.yml)
+[![Docker pulls](https://img.shields.io/docker/pulls/sir5kong/kafka)](https://hub.docker.com/r/sir5kong/kafka)
+[![Docker TAG](https://img.shields.io/docker/v/sir5kong/kafka?label=tags&sort=date)](https://hub.docker.com/r/sir5kong/kafka/tags)
+![Docker Iamge](https://img.shields.io/docker/image-size/sir5kong/kafka)
 
-# Quick reference
+- [Dockerfile](https://github.com/sir5kong/kafka-docker/blob/main/Dockerfile)
+- [GitHub](https://github.com/sir5kong/kafka-docker)
+- [简体中文](https://github.com/sir5kong/kafka-docker/blob/main/README-zh.md)
 
--	**Maintained by**:  
-	[sir5kong](https://github.com/sir5kong/kafka-docker)
+# Supported tags
 
--	**Where to file issues**:  
-	[https://github.com/sir5kong/kafka-docker/issues](https://github.com/sir5kong/kafka-docker/issues)
-
-# Supported tags and respective `Dockerfile` links
-
--	[`v3.5.0`, `v3.5`, `latest`](https://github.com/sir5kong/kafka-docker/blob/main/Dockerfile)
--	[`v3.4.1`, `v3.4`](https://github.com/sir5kong/kafka-docker/blob/main/Dockerfile)
--	[`v3.3.2`, `v3.3`](https://github.com/sir5kong/kafka-docker/blob/main/Dockerfile)
+-	`v3.5.0`, `v3.5`, `latest`
+-	`v3.4.1`, `v3.4`
+-	`v3.3.2`, `v3.3`
+- [More Tags](https://hub.docker.com/r/sir5kong/kafka/tags)
 
 # What is Apache Kafka?
 
@@ -38,7 +38,7 @@ Apache Kafka is an open-source distributed event streaming platform used by thou
 Starting a Kafka instance is simple:
 
 ``` shell
-docker run -d --name kafka-server --network host sir5kong/kafka:v3.5
+docker run -d --name kafka-server --network host sir5kong/kafka
 ```
 
 ### Persisting your data
@@ -48,7 +48,7 @@ docker volume create kafka-data
 docker run -d --name kafka-server \
   --network host \
   -v kafka-data:/opt/kafka/data \
-  sir5kong/kafka:v3.5
+  sir5kong/kafka
 ```
 
 > The default listener port of the broker is `9092`
@@ -62,7 +62,7 @@ docker run -d --name kafka-server \
   -v kafka-data:/opt/kafka/data \
   --env KAFKA_CONTROLLER_LISTENER_PORT=29091 \
   --env KAFKA_BROKER_LISTENER_PORT=29092 \
-  sir5kong/kafka:v3.5
+  sir5kong/kafka
 ```
 
 ### Using Docker Compose
@@ -172,7 +172,7 @@ helm upgrade --install kafka \
 
 > More values please refer to [examples/values-production.yml](https://github.com/sir5kong/kafka-docker/raw/main/examples/values-production.yml)
 
-### Using LoadBalancer
+### Kubernetes external access
 
 Enable Kubernetes external cluster access to Kafka brokers.
 
@@ -187,8 +187,3 @@ helm upgrade --install kafka \
 ```
 
 Configure your DNS record to complete this deployment.
-
-# Multi-language `README.md`
-
-- [English](README.md)
-- [简体中文](README-zh.md)

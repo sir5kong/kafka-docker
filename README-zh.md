@@ -1,10 +1,18 @@
-# https://github.com/sir5kong/kafka-docker
+[![CI](https://github.com/sir5kong/kafka-docker/actions/workflows/docker-publish.yml/badge.svg)](https://github.com/sir5kong/kafka-docker/actions/workflows/docker-publish.yml)
+[![Docker pulls](https://img.shields.io/docker/pulls/sir5kong/kafka)](https://hub.docker.com/r/sir5kong/kafka)
+[![Docker TAG](https://img.shields.io/docker/v/sir5kong/kafka?label=tags&sort=date)](https://hub.docker.com/r/sir5kong/kafka/tags)
+![Docker Iamge](https://img.shields.io/docker/image-size/sir5kong/kafka)
 
-# 镜像版本
+- [Dockerfile](https://github.com/sir5kong/kafka-docker/blob/main/Dockerfile)
+- [GitHub](https://github.com/sir5kong/kafka-docker)
+- [简体中文](https://github.com/sir5kong/kafka-docker/blob/main/README-zh.md)
 
--	[`v3.5.0`, `v3.5`, `latest`](https://github.com/sir5kong/kafka-docker/blob/main/Dockerfile)
--	[`v3.4.1`, `v3.4`](https://github.com/sir5kong/kafka-docker/blob/main/Dockerfile)
--	[`v3.3.2`, `v3.3`](https://github.com/sir5kong/kafka-docker/blob/main/Dockerfile)
+# Supported tags
+
+-	`v3.5.0`, `v3.5`, `latest`
+-	`v3.4.1`, `v3.4`
+-	`v3.3.2`, `v3.3`
+- [More Tags](https://hub.docker.com/r/sir5kong/kafka/tags)
 
 # 关于 Apache Kafka
 
@@ -164,9 +172,9 @@ helm upgrade --install kafka \
 
 > 高可用集群更多配置项请参考 [examples/values-production.yml](https://github.com/sir5kong/kafka-docker/raw/main/examples/values-production.yml)
 
-### 使用 LoadBalancer
+### Kubernetes 集群外访问
 
-启用集群外访问模式：
+启用 Kubernetes 集群外访问：
 
 ``` shell
 helm upgrade --install kafka \
@@ -179,8 +187,3 @@ helm upgrade --install kafka \
 ```
 
 上面部署成功后请完成域名解析配置。
-
-# Multi-language `README.md`
-
-- [English](README.md)
-- [简体中文](README-zh.md)
