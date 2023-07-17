@@ -1,0 +1,72 @@
+site_name: Kafka containerization solution
+# site_url: 'https://github.com/sir5kong/kafka-docker'
+
+## Repository
+repo_name: 'sir5kong/kafka-docker'
+repo_url: 'https://github.com/sir5kong/kafka-docker'
+
+# Extensions
+markdown_extensions:
+  - admonition
+  - abbr
+  - attr_list
+  - def_list
+  - footnotes
+  - meta
+  - md_in_html
+  - toc:
+      # insert a blank space before the character
+      permalink: " ¶"
+  - pymdownx.arithmatex:
+      generic: true
+  - pymdownx.betterem:
+      smart_enable: all
+  - pymdownx.caret
+  - pymdownx.critic
+  - pymdownx.details
+  - pymdownx.emoji:
+      emoji_index: !!python/name:materialx.emoji.twemoji
+      emoji_generator: !!python/name:materialx.emoji.to_svg
+  - pymdownx.highlight
+  - pymdownx.inlinehilite
+  - pymdownx.keys
+  - pymdownx.mark
+  - pymdownx.smartsymbols
+  - pymdownx.snippets:
+      check_paths: true
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.tilde
+
+theme:
+  name: material
+  features:
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.instant
+    - navigation.sections
+
+  #palette:
+  #  primary: "teal"
+  #  accent: "green"
+
+  include_sidebar: true
+
+plugins:
+  - search
+  - minify:
+      minify_html: true
+
+# Page tree
+nav:
+  - Docker Image: README.md
+  - Helm: helm.md
+  - External Network: external.md
+  - About KRaft: kraft.md
+  - '简体中文': README-zh.md
