@@ -46,7 +46,11 @@ markdown_extensions:
 
 theme:
   name: material
+  font: false
+  language: 'zh'
   features:
+    - content.code.annotate
+    - content.code.copy
     - navigation.tabs
     - navigation.tabs.sticky
     - navigation.instant
