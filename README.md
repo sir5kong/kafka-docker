@@ -1,6 +1,6 @@
 [![CI](https://github.com/sir5kong/kafka-docker/actions/workflows/docker-publish.yml/badge.svg)](https://github.com/sir5kong/kafka-docker/actions/workflows/docker-publish.yml)
 [![Docker pulls](https://img.shields.io/docker/pulls/sir5kong/kafka)](https://hub.docker.com/r/sir5kong/kafka)
-[![Docker TAG](https://img.shields.io/docker/v/sir5kong/kafka?label=tags&sort=date)](https://hub.docker.com/r/sir5kong/kafka/tags)
+[![Docker TAG](https://img.shields.io/badge/dynamic/yaml?label=version&url=https%3A%2F%2Fsir5kong.github.io%2Fkafka-docker%2Findex.yaml&query=%24.entries.kafka[0].appVersion)](https://hub.docker.com/r/sir5kong/kafka/tags)
 ![Docker Iamge](https://img.shields.io/docker/image-size/sir5kong/kafka)
 
 - [Dockerfile](https://github.com/sir5kong/kafka-docker/blob/main/Dockerfile)
