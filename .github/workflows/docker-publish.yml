@@ -68,6 +68,8 @@ jobs:
         with:
           context: .
           push: false
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
           tags: |
             ${{ env.CR_REPO }}:${{ github.ref_name }}-${{ steps.vars.outputs.sha_short }}
       -
@@ -79,6 +81,8 @@ jobs:
         with:
           context: .
           push: true
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
           build-args: |
             kafka_version=${{ steps.vars.outputs.kafka_version }}
           tags: |
